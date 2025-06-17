@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Classification grain de beauté</title>
+    <style>
+        .bar-container {
+            width: 300px;
+            background-color: #ddd;
+            border-radius: 25px;
+            margin: 10px auto;
+            height: 25px;
+        }
+        .bar {
+            height: 25px;
+            border-radius: 25px;
+            text-align: center;
+            color: white;
+            font-weight: bold;
+            line-height: 25px;
+        }
+        .scores {
+            width: 300px;
+            margin: 0 auto 20px auto;
+            font-family: Arial, sans-serif;
+            text-align: left;
+        }
+        .scores div {
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body style="font-family: Arial; text-align: center; margin-top: 50px;">
+    <h1>Classification grain de beauté</h1>
+    <form method="POST" enctype="multipart/form-data">
+        <input type="file" name="file" accept="image/*" required />
+        <br /><br />
+        <button type="submit">Est-ce bénin ou malin ?</button>
+    </form>
+
+    {% if prediction %}
+        <h2>Prediction: {{ prediction.upper() }}</h2>
+        <img src="data:image/jpeg;base64,{{ image_data }}" alt="Uploaded Image" width="300" style="margin-top: 20px;" />
+
+        <div class="scores">
+            {% for cls, score in scores.items() %}
+                <div>{{ cls.capitalize() }}: {{ score }}%</div>
+            {% endfor %}
+        </div>
+
+        <div class="bar-container" aria-label="Prediction confidence bar">
+            <div class="bar" style="width: {{ scores[prediction] }}%; background-color: {{ bar_color }};">
+                {{ scores[prediction] }}%
+            </div>
+        </div>
+    {% endif %}
+</body>
+</html>
