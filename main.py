@@ -12,27 +12,28 @@ import torch.nn.functional as F
 
 app = Flask(__name__)
 
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-
-MODEL_GDRIVE_ID = "1xbAvjokOhu_uo0jq7_brPWwuf5bRnLwe"
-
-def download_file_if_not_exists(url, output_path):
-    if not os.path.exists(output_path):
-        print(f"Téléchargement du fichier dans {output_path} ...")
-        gdown.download(url, output=output_path, quiet=False)
-
-MODEL_URL = "https://drive.google.com/uc?id=1xbAvjokOhu_uo0jq7_brPWwuf5bRnLwe"
-MODEL_PATH = "skin_classifier.pt"
-
-model = download_file_if_not_exists(MODEL_URL, MODEL_PATH)
-
 class_names = ['benign', 'malignant']
+file_id = "1xbAvjokOhu_uo0jq7_brPWwuf5bRnLwe"
+destination = "skin_classifier.pt"
 
-model = models.resnet18()
-model.fc = torch.nn.Linear(model.fc.in_features, 2)
-model.load_state_dict(torch.load(MODEL_PATH, map_location=device))
-model.to(device)
-model.eval()
+# Crée une vraie URL de téléchargement
+url = f"https://drive.google.com/uc?id={file_id}"
+
+# Télécharge si nécessaire
+if not os.path.exists(destination):
+    gdown.download(url, destination, quiet=False)
+    if os.path.getsize(destination) < 1_000_000:  # Moins de 1 Mo → probablement mauvais fichier
+        raise RuntimeError("Fichier téléchargé invalide ou trop petit. Vérifiez le lien Google Drive.")
+
+with open(destination, "rb") as f:
+    start = f.read(200)
+    print("=== DEBUT DU FICHIER ===")
+    print(start)
+    
+# === CHARGEMENT DU MODÈLE ===
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+model = torch.load(destination, map_location=device, weights_only=False)  # ou "cuda" selon le besoin
+model.eval()      
 
 transform = transforms.Compose([
     transforms.Resize((224, 224)),
