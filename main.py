@@ -14,11 +14,7 @@ app = Flask(__name__)
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-MODEL_FOLDER = "model"
-MODEL_PATH = os.path.join(MODEL_FOLDER, "skin_classifier.pt")
-
-MODEL_GDRIVE_ID = "TON_ID_FICHIER_GDRIVE_MODEL"
-CLASS_NAMES_GDRIVE_ID = "TON_ID_FICHIER_GDRIVE_CLASS_NAMES"
+MODEL_GDRIVE_ID = "1xbAvjokOhu_uo0jq7_brPWwuf5bRnLwe"
 
 def download_file_if_not_exists(url_id, output_path):
     if not os.path.exists(output_path):
@@ -27,8 +23,9 @@ def download_file_if_not_exists(url_id, output_path):
     else:
         print(f"Fichier {output_path} déjà présent, téléchargement ignoré.")
 
-os.makedirs(MODEL_FOLDER, exist_ok=True)
-download_file_if_not_exists(MODEL_GDRIVE_ID, MODEL_PATH)
+MODEL_PATH = "skin_classifier.pt"
+
+model = download_file_if_not_exists(MODEL_PATH)
 
 class_names = ['benign', 'malignant']
 
