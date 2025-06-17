@@ -3,7 +3,7 @@
 Cette application permet de classifier une image de peau en tumeur **bénigne** ou **maligne**
 à partir d’un modèle entraîné, avec une interface web simple et interactive.
 
-La précision du modèle est d'environ 90%
+La précision du modèle est d'environ 90%.
 
 ## Fonctionnalités
 
