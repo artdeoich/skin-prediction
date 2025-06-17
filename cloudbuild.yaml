@@ -13,7 +13,7 @@ steps:
         'deploy',
         'skin-prediction',
         '--image',
-        'gcr.io/$PROJECT_ID/skin-tumor-flask-app',
+        'gcr.io/$PROJECT_ID/skin-prediction',
         '--platform',
         'managed',
         '--region',
