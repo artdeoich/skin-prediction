@@ -19,7 +19,7 @@ MODEL_GDRIVE_ID = "1xbAvjokOhu_uo0jq7_brPWwuf5bRnLwe"
 def download_file_if_not_exists(url_id, output_path):
     if not os.path.exists(output_path):
         print(f"Téléchargement du fichier dans {output_path} ...")
-        gdown.download(f"https://drive.google.com/uc?id={url_id}", output_path, quiet=False)
+        gdown.download(id=url_id, output=output_path, quiet=False)
     else:
         print(f"Fichier {output_path} déjà présent, téléchargement ignoré.")
 
