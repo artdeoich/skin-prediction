@@ -25,7 +25,7 @@ def download_file_if_not_exists(url_id, output_path):
 
 MODEL_PATH = "skin_classifier.pt"
 
-model = download_file_if_not_exists(MODEL_PATH)
+model = download_file_if_not_exists(MODEL_GDRIVE_ID, MODEL_PATH)
 
 class_names = ['benign', 'malignant']
 
