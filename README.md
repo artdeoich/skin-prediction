@@ -5,8 +5,6 @@ Cette application permet de classifier une image de peau en tumeur **bénigne** 
 
 La précision du modèle est d'environ 90%
 
----
-
 ## Fonctionnalités
 
 - Upload d’une image en mémoire, sans stockage disque
@@ -16,10 +14,9 @@ La précision du modèle est d'environ 90%
 - Conteneur Docker prêt à déployer
 - Déploiement facile sur Google Cloud Run via Cloud Build
 
----
-
 ## Structure du projet
 
+```
 ├── Dockerfile
 ├── main.py
 ├── requirements.txt
@@ -28,6 +25,7 @@ La précision du modèle est d'environ 90%
 ├── model/ # dossier créé au runtime, fichiers téléchargés automatiquement
 │ ├── skin_classifier.pt
 └── cloudbuild.yaml # script de build et déploiement GCP Cloud Run
+```
 
 ## Construire et runner l’image Docker
 
