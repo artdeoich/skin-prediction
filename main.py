@@ -16,16 +16,15 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 MODEL_GDRIVE_ID = "1xbAvjokOhu_uo0jq7_brPWwuf5bRnLwe"
 
-def download_file_if_not_exists(url_id, output_path):
+def download_file_if_not_exists(url, output_path):
     if not os.path.exists(output_path):
         print(f"Téléchargement du fichier dans {output_path} ...")
-        gdown.download(id=url_id, output=output_path, quiet=False)
-    else:
-        print(f"Fichier {output_path} déjà présent, téléchargement ignoré.")
+        gdown.download(url, output=output_path, quiet=False)
 
+MODEL_URL = "https://drive.google.com/uc?id=1xbAvjokOhu_uo0jq7_brPWwuf5bRnLwe"
 MODEL_PATH = "skin_classifier.pt"
 
-model = download_file_if_not_exists(MODEL_GDRIVE_ID, MODEL_PATH)
+model = download_file_if_not_exists(MODEL_URL, MODEL_PATH)
 
 class_names = ['benign', 'malignant']
 
