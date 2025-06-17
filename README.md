@@ -29,10 +29,12 @@ La précision du modèle est d'environ 90%.
 
 ## Construire et runner l’image Docker
 
+```sh
 docker build -t skin-prediction .
 
 docker run -p 5000:5000 skin-prediction
+```
 
 ## Accès 
 
-http://localhost:5000 
+http://localhost:5000
