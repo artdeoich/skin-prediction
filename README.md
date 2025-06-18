@@ -5,6 +5,11 @@ Cette application permet de classifier une image de peau en tumeur **bénigne** 
 
 La précision du modèle est d'environ 90%.
 
+![Matrice de confusion](assets/matrix-confusion.png)
+
+13% de faux négatif
+8% de faux positif
+
 ## Fonctionnalités
 
 - Upload d’une image en mémoire, sans stockage disque
