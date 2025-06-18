@@ -11,7 +11,7 @@ import json
 import torch.nn.functional as F
 import torch.nn as nn
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder='templates')
 
 class_names = ['benign', 'malignant']
 
@@ -70,7 +70,7 @@ def index():
             # Choix couleur barre: vert si benign majoritaire, rouge si malignant majoritaire
             bar_color = "#4CAF50" if prediction == "benign" else "#F44336"
 
-    return render_template('app/templates/index.html', prediction=prediction, image_data=image_data, scores=scores, bar_color=bar_color)
+    return render_template('index.html', prediction=prediction, image_data=image_data, scores=scores, bar_color=bar_color)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', debug=True)
