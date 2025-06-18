@@ -32,16 +32,17 @@ with open(destination, "rb") as f:
     print(start)
     
 # === CHARGEMENT DU MODÈLE ===
-# Créer le modèle avec même architecture qu'à l'entraînement
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
+# Créer l'architecture du modèle
 model = models.resnet18()
-model.fc = nn.Linear(model.fc.in_features, 2)  # 2 classes
+model.fc = torch.nn.Linear(model.fc.in_features, 2)  # adapter selon ton cas
 
 # Charger les poids
 model.load_state_dict(torch.load(destination, map_location=device))
 
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-model = torch.load(destination, map_location=device, weights_only=False)  # ou "cuda" selon le besoin
-model.eval()      
+model.to(device)
+model.eval()
 
 transform = transforms.Compose([
     transforms.Resize((224, 224)),
