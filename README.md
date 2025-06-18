@@ -7,8 +7,8 @@ La précision du modèle est d'environ 90%.
 
 ![Matrice de confusion](assets/matrix-confusion.png)
 
-13% de faux négatif
-8% de faux positif
+10% de faux négatifs.
+9% de faux positifs.
 
 ## Fonctionnalités
 
