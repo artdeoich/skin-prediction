@@ -11,7 +11,7 @@ import json
 import torch.nn.functional as F
 import torch.nn as nn
 
-app = Flask(__name__, template_folder='templates')
+app = Flask(__name__, template_folder='app/templates')
 
 class_names = ['benign', 'malignant']
 
