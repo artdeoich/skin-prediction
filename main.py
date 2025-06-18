@@ -9,6 +9,7 @@ import gdown
 import os
 import json
 import torch.nn.functional as F
+import torch.nn as nn
 
 app = Flask(__name__)
 
