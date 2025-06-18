@@ -34,7 +34,7 @@ with open(destination, "rb") as f:
     
 # === CHARGEMENT DU MODÈLE ===
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-model = torch.load(destination, map_location=device)
+model = torch.load(destination, map_location=device, weights_only=False)
 model.eval()  
 
 transform = transforms.Compose([
