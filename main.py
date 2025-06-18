@@ -33,16 +33,8 @@ with open(destination, "rb") as f:
     
 # === CHARGEMENT DU MODÈLE ===
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-
-# Créer l'architecture du modèle
-model = models.resnet18()
-model.fc = torch.nn.Linear(model.fc.in_features, 2)  # adapter selon ton cas
-
-# Charger les poids
-model.load_state_dict(torch.load(destination, map_location=device))
-
-model.to(device)
-model.eval()
+model = torch.load(destination, map_location=device)
+model.eval()  
 
 transform = transforms.Compose([
     transforms.Resize((224, 224)),
