@@ -14,7 +14,8 @@ import torch.nn as nn
 app = Flask(__name__)
 
 class_names = ['benign', 'malignant']
-file_id = "1HyuaRtQIawjI55_Kr9lykQLkQCVTcaEF"
+
+file_id = "1buOExqfuQQlWS21kUAHj0Qf--vBMrQY9"
 destination = "skin_classifier.pt"
 
 # Crée une vraie URL de téléchargement
