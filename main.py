@@ -31,6 +31,13 @@ with open(destination, "rb") as f:
     print(start)
     
 # === CHARGEMENT DU MODÈLE ===
+# Créer le modèle avec même architecture qu'à l'entraînement
+model = models.resnet18()
+model.fc = nn.Linear(model.fc.in_features, 2)  # 2 classes
+
+# Charger les poids
+model.load_state_dict(torch.load(destination, map_location=device))
+
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 model = torch.load(destination, map_location=device, weights_only=False)  # ou "cuda" selon le besoin
 model.eval()      
