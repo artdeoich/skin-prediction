@@ -1,54 +1,143 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
-    <meta charset="UTF-8" />
-    <title>Classification grain de beauté</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Classification de grain de beauté</title>
     <style>
+        :root {
+            --primary: #4CAF50;
+            --danger: #F44336;
+            --bg: #f4f4f4;
+            --text: #333;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        h1 {
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        form {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            transition: all 0.3s ease-in-out;
+        }
+
+        input[type="file"] {
+            width: 100%;
+            margin-bottom: 15px;
+        }
+
+        button {
+            background: linear-gradient(135deg, #4CAF50, #81C784);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 30px;
+            font-size: 1em;
+            cursor: pointer;
+            width: 100%;
+            transition: transform 0.2s;
+        }
+
+        button:hover {
+            transform: scale(1.03);
+        }
+
+        img {
+            max-width: 100%;
+            border-radius: 10px;
+            margin-top: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .scores {
+            margin: 20px auto;
+            text-align: left;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .scores div {
+            margin: 5px 0;
+            font-weight: 500;
+        }
+
         .bar-container {
-            width: 300px;
+            width: 100%;
+            max-width: 400px;
             background-color: #ddd;
             border-radius: 25px;
-            margin: 10px auto;
+            margin-top: 10px;
             height: 25px;
+            overflow: hidden;
         }
+
         .bar {
-            height: 25px;
-            border-radius: 25px;
-            text-align: center;
+            height: 100%;
             color: white;
             font-weight: bold;
             line-height: 25px;
+            text-align: center;
+            transition: width 1s ease-in-out;
         }
-        .scores {
-            width: 300px;
-            margin: 0 auto 20px auto;
-            font-family: Arial, sans-serif;
-            text-align: left;
+
+        h2 {
+            margin-top: 30px;
+            font-size: 1.5em;
+            color: var(--text);
         }
-        .scores div {
-            margin: 5px 0;
+
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 1.4em;
+            }
+
+            button {
+                font-size: 0.95em;
+            }
         }
     </style>
 </head>
-<body style="font-family: Arial; text-align: center; margin-top: 50px;">
-    <h1>Classification grain de beauté</h1>
+<body>
+    <h1>Classification de grain de beauté</h1>
     <form method="POST" enctype="multipart/form-data">
         <input type="file" name="file" accept="image/*" required />
-        <br /><br />
-        <button type="submit">Est-ce bénin ou malin ?</button>
+        <button type="submit">Analyser (bénin ou malin ?)</button>
     </form>
 
     {% if prediction %}
-        <h2>Prediction: {{ prediction.upper() }}</h2>
-        <img src="data:image/jpeg;base64,{{ image_data }}" alt="Uploaded Image" width="300" style="margin-top: 20px;" />
+        <h2>Résultat : {{ prediction.upper() }}</h2>
+        <img src="data:image/jpeg;base64,{{ image_data }}" alt="Image chargée" />
 
         <div class="scores">
             {% for cls, score in scores.items() %}
-                <div>{{ cls.capitalize() }}: {{ score }}%</div>
+                <div>{{ cls.capitalize() }} : {{ score }}%</div>
             {% endfor %}
         </div>
 
-        <div class="bar-container" aria-label="Prediction confidence bar">
+        <div class="bar-container" aria-label="Barre de confiance">
             <div class="bar" style="width: {{ scores[prediction] }}%; background-color: {{ bar_color }};">
                 {{ scores[prediction] }}%
             </div>
