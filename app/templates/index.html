@@ -120,28 +120,22 @@
         }
     </style>
 </head>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Skin Disease Classifier</title>
+</head>
 <body>
-    <h1>Classification de grain de beauté</h1>
+    <h1>Classifier une lésion cutanée</h1>
     <form method="POST" enctype="multipart/form-data">
-        <input type="file" name="file" accept="image/*" required />
-        <button type="submit">Analyser (bénin ou malin ?)</button>
+        <input type="file" name="image" accept="image/*" required>
+        <input type="submit" value="Classifier">
     </form>
 
-    {% if prediction %}
-        <h2>Résultat : {{ prediction.upper() }}</h2>
-        <img src="data:image/jpeg;base64,{{ image_data }}" alt="Image chargée" />
-
-        <div class="scores">
-            {% for cls, score in scores.items() %}
-                <div>{{ cls.capitalize() }} : {{ score }}%</div>
-            {% endfor %}
-        </div>
-
-        <div class="bar-container" aria-label="Barre de confiance">
-            <div class="bar" style="width: {{ scores[prediction] }}%; background-color: {{ bar_color }};">
-                {{ scores[prediction] }}%
-            </div>
-        </div>
+    {% if filename %}
+        <h2>Résultat : {{ result }}</h2>
+        <img src="{{ url_for('static', filename='uploads/' + filename) }}" style="width: 300px;">
     {% endif %}
 </body>
 </html>
