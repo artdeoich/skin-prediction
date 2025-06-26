@@ -8,3 +8,4 @@ torchvision
 segmentation_models_pytorch
 python-multipart
 gdown
+tensorflow
