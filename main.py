@@ -1,58 +1,72 @@
 import os
+import gdown
 import numpy as np
-from flask import Flask, request, render_template, redirect, url_for
+from flask import Flask, request, render_template, jsonify
 from tensorflow.keras.models import load_model
-from tensorflow.keras.preprocessing.image import load_img, img_to_array
-from werkzeug.utils import secure_filename
+from tensorflow.keras.preprocessing.image import img_to_array, load_img
+from PIL import Image
+import io
 
-# Configuration
-IMG_SIZE = 224  # même taille que celle utilisée pour entraîner le modèle
-UPLOAD_FOLDER = 'static/uploads'
-ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
+# === Config ===
+MODEL_PATH = "skin_lesion_classifier_v2.h5"
+IMG_SIZE = 224  # Doit correspondre à l'input du modèle
 
-# Classes
-class_names = ['akiec', 'bcc', 'bkl', 'df', 'mel', 'nv', 'vasc']
+GDRIVE_URL = "https://drive.google.com/uc?id=1QC_FnwSpJ9-D3xQ030uJDu81I3TMZzm3"  # Remplace par l'ID du fichier .h5
 
-# Création de l'app
+# === Download model from Google Drive ===
+if not os.path.exists(MODEL_PATH):
+    print("Téléchargement du modèle...")
+    gdown.download(GDRIVE_URL, MODEL_PATH, quiet=False)
+
+# === Load model ===
+model = load_model(MODEL_PATH)
+
+# === Class labels ===
+CLASS_NAMES = [
+    "akiec",
+    "bcc",
+    "bkl",
+    "df",
+    "mel",
+    "nv",
+    "vasc"
+]
+
+# === Create Flask app ===
 app = Flask(__name__)
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
-# Charger le modèle
-model = load_model('model.h5')
-
-def allowed_file(filename):
-    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
-
-def preprocess_image(filepath):
-    img = load_img(filepath, target_size=(IMG_SIZE, IMG_SIZE))
-    img_array = img_to_array(img)
-    img_array = img_array / 255.0  # Normalisation
-    return np.expand_dims(img_array, axis=0)
-
-@app.route('/', methods=['GET', 'POST'])
+@app.route("/", methods=["GET"])
 def index():
-    if request.method == 'POST':
-        if 'image' not in request.files:
-            return redirect(request.url)
-        file = request.files['image']
-        if file.filename == '' or not allowed_file(file.filename):
-            return redirect(request.url)
-        
-        filename = secure_filename(file.filename)
-        filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-        file.save(filepath)
+    return render_template("index.html")
 
-        # Prétraitement et prédiction
-        img = preprocess_image(filepath)
-        prediction = model.predict(img)
-        predicted_class = class_names[np.argmax(prediction)]
+@app.route("/predict", methods=["POST"])
+def predict():
+    if 'file' not in request.files:
+        return jsonify({"error": "Aucune image reçue"}), 400
 
-        return render_template('index.html', filename=filename, result=predicted_class)
-    return render_template('index.html')
+    file = request.files["file"]
+    if file.filename == "":
+        return jsonify({"error": "Fichier vide"}), 400
 
-@app.route('/uploads/<filename>')
-def uploaded_file(filename):
-    return url_for('static', filename='uploads/' + filename)
+    try:
+        # Lecture de l'image depuis le buffer
+        image = Image.open(io.BytesIO(file.read())).convert("RGB")
+        image = image.resize((IMG_SIZE, IMG_SIZE))
+        image = img_to_array(image) / 255.0
+        image = np.expand_dims(image, axis=0)
 
-if __name__ == '__main__':
+        # Prédiction
+        preds = model.predict(image)[0]
+        pred_class = CLASS_NAMES[np.argmax(preds)]
+        confidence = float(np.max(preds))
+
+        return jsonify({
+            "prediction": pred_class,
+            "confidence": round(confidence, 4)
+        })
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+if __name__ == "__main__":
     app.run(debug=True)
