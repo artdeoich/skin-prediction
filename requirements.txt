@@ -8,4 +8,4 @@ torchvision
 segmentation_models_pytorch
 python-multipart
 gdown
-tensorflow
+tensorflow==2.15
