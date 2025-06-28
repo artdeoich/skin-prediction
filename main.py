@@ -7,7 +7,7 @@ from tensorflow.keras.preprocessing.image import img_to_array, load_img
 from PIL import Image
 import io
 
-# === Config ===
+# === Config. ===
 MODEL_PATH = "skin_lesion_classifier_v3.keras"
 IMG_SIZE = 128  # Doit correspondre à l'input du modèle
 
