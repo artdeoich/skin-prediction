@@ -33,7 +33,7 @@ CLASS_NAMES = [
 ]
 
 # === Create Flask app ===
-app = Flask(__name__)
+app = Flask(__name__, template_folder='app/templates')
 
 @app.route("/", methods=["GET"])
 def index():
