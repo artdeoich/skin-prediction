@@ -77,6 +77,16 @@
         font-size: 1.4rem;
       }
     }
+    svg {
+      width: 400px;
+      height: 400px;
+      border: 1px solid #ccc;
+    }
+    .label {
+      font-size: 12px;
+      text-anchor: middle;
+      dominant-baseline: middle;
+    }
   </style>
 </head>
 <body>
@@ -86,7 +96,7 @@
     <input type="submit" value="Classer l'image">
   </form>
   <div id="result"></div>
-
+  <svg id="heptagon"></svg>
   <script>
     const labelMap = {
       akiec: "Kératoses actiniques et carcinome intraépithélial",
@@ -128,6 +138,35 @@
               <strong>Confiance :</strong> ${confidence}%
             </div>
           `;
+
+          const CLASS_NAMES = ["akiec", "bcc", "bkl", "df", "mel", "nv", "vasc"];
+          const predictions = [0.02, 0.1, 0.08, 0.05, 0.3, 0.4, 0.05];
+
+          const svg = document.getElementById('heptagon');
+          const cx = 200, cy = 200, r = 120; // centre et rayon
+
+          CLASS_NAMES.forEach((name, i) => {
+            const angle = (2 * Math.PI / CLASS_NAMES.length) * i - Math.PI / 2;
+            const x = cx + r * Math.cos(angle);
+            const y = cy + r * Math.sin(angle);
+
+            // Cercle pour représenter la classe, taille proportionnelle à la prédiction
+            const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+            circle.setAttribute("cx", x);
+            circle.setAttribute("cy", y);
+            circle.setAttribute("r", 10 + predictions[i] * 20); // rayon basé sur probabilité
+            circle.setAttribute("fill", "steelblue");
+            svg.appendChild(circle);
+
+            // Label texte
+            const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+            text.setAttribute("x", x);
+            text.setAttribute("y", y);
+            text.setAttribute("class", "label");
+            text.textContent = name;
+            svg.appendChild(text);
+          });
+  
         }
 
       } catch (err) {
@@ -135,5 +174,6 @@
       }
     });
   </script>
+  
 </body>
 </html>
