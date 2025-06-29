@@ -59,7 +59,10 @@ def predict():
         preds = model.predict(image)[0]
         pred_class = CLASS_NAMES[np.argmax(preds)]
         confidence = float(np.max(preds))
-        predictions_by_class = dict(zip(CLASS_NAMES, preds))
+        predictions_by_class = {
+            class_name: float(prob)
+            for class_name, prob in zip(CLASS_NAMES, preds)
+        }
 
         return jsonify({
             "prediction": pred_class,
