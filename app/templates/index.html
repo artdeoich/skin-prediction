@@ -77,17 +77,8 @@
         font-size: 1.4rem;
       }
     }
-    svg {
-      width: 400px;
-      height: 400px;
-    }
-    .label {
-      fill: white; /* couleur du texte */
-      font-size: 12px;
-      text-anchor: middle;
-      dominant-baseline: middle;
-    }
   </style>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
   <h1>Classificateur de Lésions Cutanées</h1>
@@ -96,7 +87,7 @@
     <input type="submit" value="Classer l'image">
   </form>
   <div id="result"></div>
-  <svg id="heptagon"></svg>
+  <canvas id="radarChart" width="400" height="400"></canvas>
   <script>
     const labelMap = {
       akiec: "Kératoses actiniques et carcinome intraépithélial",
@@ -138,9 +129,11 @@
               <strong>Confiance :</strong> ${confidence}%
             </div>
           `;
-
-          const predictions_by_class = data.predictions_by_class;
          
+          // Données reçues depuis le backend
+          const predictions_by_class = data.predictions_by_class;
+        
+          // Dictionnaire de traduction
           const CLASS_LABELS_FR = {
             "akiec": "Kératose actinique",
             "bcc": "Carcinome basocellulaire",
@@ -150,32 +143,52 @@
             "nv": "Nævus",
             "vasc": "Lésion vasculaire"
           };
-          
-          const svg = document.getElementById('heptagon');
-          const cx = 200, cy = 200, r = 120;
-          
-          const classNames = Object.keys(predictions_by_class);
-          const total = classNames.length;
-          
-          classNames.forEach((name, i) => {
-            const prob = predictions_by_class[name];
-            const angle = (2 * Math.PI / total) * i - Math.PI / 2;
-            const x = cx + r * Math.cos(angle);
-            const y = cy + r * Math.sin(angle);
-          
-            const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-            circle.setAttribute("cx", x);
-            circle.setAttribute("cy", y);
-            circle.setAttribute("r", 10 + prob * 20);
-            circle.setAttribute("fill", "steelblue");
-            svg.appendChild(circle);
-          
-            const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
-            text.setAttribute("x", x);
-            text.setAttribute("y", y - 20);
-            text.setAttribute("class", "label");
-            text.textContent = `${CLASS_LABELS_FR[name]} (${(prob * 100).toFixed(1)}%)`;
-            svg.appendChild(text);
+        
+          // Extraire les labels français et les probabilités dans le bon ordre
+          const classOrder = ["akiec", "bcc", "bkl", "df", "mel", "nv", "vasc"];
+        
+          const labels = classOrder.map(code => CLASS_LABELS_FR[code]);
+          const dataValues = classOrder.map(code => parseFloat(predictions_by_class[code] || 0));
+        
+          // Créer le radar chart
+          const ctx = document.getElementById("radarChart").getContext("2d");
+        
+          new Chart(ctx, {
+            type: "radar",
+            data: {
+              labels: labels,
+              datasets: [{
+                label: "Prédiction",
+                data: dataValues,
+                backgroundColor: "rgba(30, 144, 255, 0.3)",
+                borderColor: "rgba(30, 144, 255, 1)",
+                pointBackgroundColor: "white",
+                pointBorderColor: "steelblue",
+                pointRadius: 5,
+              }]
+            },
+            options: {
+              responsive: true,
+              scales: {
+                r: {
+                  min: 0,
+                  max: 1,
+                  ticks: {
+                    stepSize: 0.2
+                  },
+                  pointLabels: {
+                    font: {
+                      size: 13
+                    }
+                  }
+                }
+              },
+              plugins: {
+                legend: {
+                  display: false
+                }
+              }
+            }
           });
   
         }
