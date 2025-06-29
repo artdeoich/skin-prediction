@@ -87,7 +87,7 @@
     <input type="submit" value="Classer l'image">
   </form>
   <div id="result"></div>
-  <canvas id="radarChart" width="400" height="400"></canvas>
+  <canvas id="radarChart" width="300" height="300"></canvas>
   <script>
     const labelMap = {
       akiec: "Kératoses actiniques et carcinome intraépithélial",
@@ -152,7 +152,9 @@
         
           // Créer le radar chart
           const ctx = document.getElementById("radarChart").getContext("2d");
-        
+
+          ctx.innerHTML = '';
+          
           new Chart(ctx, {
             type: "radar",
             data: {
@@ -178,7 +180,7 @@
                   },
                   pointLabels: {
                     font: {
-                      size: 13
+                      size: 12
                     }
                   }
                 }
