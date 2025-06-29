@@ -59,10 +59,12 @@ def predict():
         preds = model.predict(image)[0]
         pred_class = CLASS_NAMES[np.argmax(preds)]
         confidence = float(np.max(preds))
+        predictions_by_class = dict(zip(CLASS_NAMES, preds))
 
         return jsonify({
             "prediction": pred_class,
-            "confidence": round(confidence, 4)
+            "confidence": round(confidence, 4),
+            "predictions_by_class": predictions_by_class
         })
 
     except Exception as e:
