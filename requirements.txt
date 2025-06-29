@@ -3,9 +3,6 @@ uvicorn[standard]
 Pillow
 numpy
 matplotlib
-torch
-torchvision
-segmentation_models_pytorch
 python-multipart
 gdown
 tensorflow==2.18.0
