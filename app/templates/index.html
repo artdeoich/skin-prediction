@@ -139,31 +139,42 @@
             </div>
           `;
 
-          const CLASS_NAMES = ["akiec", "bcc", "bkl", "df", "mel", "nv", "vasc"];
-          const predictions = [0.02, 0.1, 0.08, 0.05, 0.3, 0.4, 0.05];
-
+          const predictions_by_class = data.predictions_by_class;
+         
+          const CLASS_LABELS_FR = {
+            "akiec": "Kératose actinique",
+            "bcc": "Carcinome basocellulaire",
+            "bkl": "Kératose bénigne",
+            "df": "Dermatofibrome",
+            "mel": "Mélanome",
+            "nv": "Nævus",
+            "vasc": "Lésion vasculaire"
+          };
+          
           const svg = document.getElementById('heptagon');
-          const cx = 200, cy = 200, r = 120; // centre et rayon
-
-          CLASS_NAMES.forEach((name, i) => {
-            const angle = (2 * Math.PI / CLASS_NAMES.length) * i - Math.PI / 2;
+          const cx = 200, cy = 200, r = 120;
+          
+          const classNames = Object.keys(predictions_by_class);
+          const total = classNames.length;
+          
+          classNames.forEach((name, i) => {
+            const prob = predictions_by_class[name];
+            const angle = (2 * Math.PI / total) * i - Math.PI / 2;
             const x = cx + r * Math.cos(angle);
             const y = cy + r * Math.sin(angle);
-
-            // Cercle pour représenter la classe, taille proportionnelle à la prédiction
+          
             const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
             circle.setAttribute("cx", x);
             circle.setAttribute("cy", y);
-            circle.setAttribute("r", 10 + predictions[i] * 20); // rayon basé sur probabilité
+            circle.setAttribute("r", 10 + prob * 20);
             circle.setAttribute("fill", "steelblue");
             svg.appendChild(circle);
-
-            // Label texte
+          
             const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
             text.setAttribute("x", x);
-            text.setAttribute("y", y);
+            text.setAttribute("y", y - 20);
             text.setAttribute("class", "label");
-            text.textContent = name;
+            text.textContent = `${CLASS_LABELS_FR[name]} (${(prob * 100).toFixed(1)}%)`;
             svg.appendChild(text);
           });
   
