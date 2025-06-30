@@ -89,15 +89,56 @@
   <div id="result"></div>
   <canvas id="radarChart" width="300" height="300"></canvas>
   <script>
-    const labelMap = {
-      akiec: "Kératoses actiniques et carcinome intraépithélial",
-      bcc: "Carcinome basocellulaire",
-      bkl: "Lésions bénignes de type kératoses",
-      df: "Dermatofibrome",
-      mel: "Mélanome",
-      nv: "Grain de beauté bénin",
-      vasc: "Lésions vasculaires : angiome..."
+    let radarChartInstance; // à mettre en variable globale
+    const CLASS_LABELS_FR = {
+        "akiec": "Kératose actinique",
+        "bcc": "Carcinome basocellulaire",
+        "bkl": "Kératose bénigne",
+        "df": "Dermatofibrome",
+        "mel": "Mélanome",
+        "nv": "Nævus",
+        "vasc": "Lésion vasculaire"
     };
+    function renderRadarChart(predictions_by_class) {
+      const classOrder = ["akiec", "bcc", "bkl", "df", "mel", "nv", "vasc"];
+      const labels = classOrder.map(code => CLASS_LABELS_FR[code]);
+      const dataValues = classOrder.map(code => parseFloat(predictions_by_class[code] || 0));
+
+      const ctx = document.getElementById("radarChart").getContext("2d");
+
+      // DETRUIRE l'ancien graphique si besoin
+      if (radarChartInstance) {
+        radarChartInstance.destroy();
+      }
+
+      radarChartInstance = new Chart(ctx, {
+        type: "radar",
+        data: {
+          labels: labels,
+          datasets: [{
+            label: "Prédiction",
+            data: dataValues,
+            backgroundColor: "rgba(30, 144, 255, 0.3)",
+            borderColor: "rgba(30, 144, 255, 1)",
+            pointBackgroundColor: "white",
+            pointBorderColor: "steelblue",
+            pointRadius: 5,
+          }]
+        },
+        options: {
+          responsive: true,
+          scales: {
+            r: {
+              min: 0,
+              max: 1,
+              ticks: { stepSize: 0.2 },
+              pointLabels: { font: { size: 13 } }
+            }
+          },
+          plugins: { legend: { display: false } }
+        }
+      });
+    }
 
     document.getElementById("upload-form").addEventListener("submit", async function (e) {
       e.preventDefault();
@@ -121,7 +162,7 @@
         if (data.error) {
           resultDiv.innerHTML = `<strong>Erreur :</strong> ${data.error}`;
         } else {
-          const labelFr = labelMap[data.prediction] || "Inconnu";
+          const labelFr = CLASS_LABELS_FR[data.prediction] || "Inconnu";
           const confidence = (data.confidence * 100).toFixed(2);
           resultDiv.innerHTML = `
             <div>
@@ -131,67 +172,7 @@
           `;
          
           // Données reçues depuis le backend
-          const predictions_by_class = data.predictions_by_class;
-        
-          // Dictionnaire de traduction
-          const CLASS_LABELS_FR = {
-            "akiec": "Kératose actinique",
-            "bcc": "Carcinome basocellulaire",
-            "bkl": "Kératose bénigne",
-            "df": "Dermatofibrome",
-            "mel": "Mélanome",
-            "nv": "Nævus",
-            "vasc": "Lésion vasculaire"
-          };
-        
-          // Extraire les labels français et les probabilités dans le bon ordre
-          const classOrder = ["akiec", "bcc", "bkl", "df", "mel", "nv", "vasc"];
-        
-          const labels = classOrder.map(code => CLASS_LABELS_FR[code]);
-          const dataValues = classOrder.map(code => parseFloat(predictions_by_class[code] || 0));
-        
-          // Créer le radar chart
-          const ctx = document.getElementById("radarChart").getContext("2d");
-
-          ctx.innerHTML = '';
-          
-          new Chart(ctx, {
-            type: "radar",
-            data: {
-              labels: labels,
-              datasets: [{
-                label: "Prédiction",
-                data: dataValues,
-                backgroundColor: "rgba(30, 144, 255, 0.3)",
-                borderColor: "rgba(30, 144, 255, 1)",
-                pointBackgroundColor: "white",
-                pointBorderColor: "steelblue",
-                pointRadius: 5,
-              }]
-            },
-            options: {
-              responsive: true,
-              scales: {
-                r: {
-                  min: 0,
-                  max: 1,
-                  ticks: {
-                    stepSize: 0.2
-                  },
-                  pointLabels: {
-                    font: {
-                      size: 12
-                    }
-                  }
-                }
-              },
-              plugins: {
-                legend: {
-                  display: false
-                }
-              }
-            }
-          });
+          renderRadarChart(data.predictions_by_class);
   
         }
 
