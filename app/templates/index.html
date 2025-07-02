@@ -168,7 +168,7 @@
         if (data.error) {
           resultDiv.innerHTML = `<strong>Erreur :</strong> ${data.error}`;
         } else {
-          const labelFr = (CLASS_LABELS_FR[data.prediction] || "Inconnu").replace(/\n/g, "");
+          const labelFr = (CLASS_LABELS_FR[data.prediction] || "Inconnu").replace(/\n/g, " ");
           const confidence = (data.confidence * 100).toFixed(2);
           resultDiv.innerHTML = `
             <div>
