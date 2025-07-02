@@ -8,11 +8,11 @@ from PIL import Image
 import io
 
 # === Config. ===
-MODEL_PATH = "skin-prediction-0-926.keras"
+MODEL_PATH = "skin-prediction-0-93.keras"
 
 IMG_SIZE = 256  # Doit correspondre à l'input du modèle
 
-GDRIVE_URL = "https://drive.google.com/uc?id=1tKBxNYh9jtBy_nnRLuKo6ZCCQicDDR0K"  # Remplace par l'ID du fichier .h5
+GDRIVE_URL = "https://drive.google.com/uc?id=1dy4Dq_pQeMPPZXAr--W8djCGRxZ8JX-_"  # Remplace par l'ID du fichier .h5
 
 # === Download model from Google Drive ===
 if not os.path.exists(MODEL_PATH):
