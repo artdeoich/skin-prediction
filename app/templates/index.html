@@ -97,13 +97,13 @@
   <script>
     let radarChartInstance; // à mettre en variable globale
     const CLASS_LABELS_FR = {
-        "akiec": "Kér. actinique (précancer)",
-        "bcc": "Carc. baso. (malin)",
-        "bkl": "Kér. bénigne",
-        "df": "Fibrome (bénin)",
-        "mel": "Mélanome (malin)",
-        "nv": "Nævus (bénin)",
-        "vasc": "Angiome etc. (bénin)"
+        "akiec": "Kér. actinique\n(précancer)",
+        "bcc": "Carc. baso.\n(malin)",
+        "bkl": "Kératose\nbénigne",
+        "df": "Fibrome\n(bénin)",
+        "mel": "Mélanome\n(malin)",
+        "nv": "Nævus\n(bénin)",
+        "vasc": "Angiome etc.\n(bénin)"
     };
     function renderRadarChart(predictions_by_class) {
       const classOrder = ["akiec", "bcc", "bkl", "df", "mel", "nv", "vasc"];
@@ -168,7 +168,7 @@
         if (data.error) {
           resultDiv.innerHTML = `<strong>Erreur :</strong> ${data.error}`;
         } else {
-          const labelFr = CLASS_LABELS_FR[data.prediction] || "Inconnu";
+          const labelFr = (CLASS_LABELS_FR[data.prediction] || "Inconnu").replace(/\n/g, "<br>");
           const confidence = (data.confidence * 100).toFixed(2);
           resultDiv.innerHTML = `
             <div>
