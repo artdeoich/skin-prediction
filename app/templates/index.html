@@ -81,6 +81,7 @@
     #radarChart {
       background-color: #f6f8ff;
       margin-top: 2em;
+      display:none;
     }
   </style>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -96,13 +97,13 @@
   <script>
     let radarChartInstance; // à mettre en variable globale
     const CLASS_LABELS_FR = {
-        "akiec": "Kératose actinique",
-        "bcc": "Carcinome basocellulaire",
-        "bkl": "Kératose bénigne",
-        "df": "Dermatofibrome",
-        "mel": "Mélanome",
-        "nv": "Nævus",
-        "vasc": "Lésion vasculaire"
+        "akiec": "Kér. actinique (précancer)",
+        "bcc": "Carc. baso. (malin)",
+        "bkl": "Kér. bénigne",
+        "df": "Fibrome (bénin)",
+        "mel": "Mélanome (malin)",
+        "nv": "Nævus (bénin)",
+        "vasc": "Angiome etc. (bénin)"
     };
     function renderRadarChart(predictions_by_class) {
       const classOrder = ["akiec", "bcc", "bkl", "df", "mel", "nv", "vasc"];
