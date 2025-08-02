@@ -8,15 +8,21 @@ Cette application permet de classifier une image de peau en tumeur **bénigne** 
 
 La précision du modèle est d'environ 93%.
 
-![Matrice de confusion](assets/matrix-confusion.png)
-
-![Matrice de confusion sur jeux de validation 10% en pourcentage](assets/matrix-confusion-percent.png)
-
 Rapport de classification avec jeu de données augmenté
+
 ![Rapport de classification](assets/report.png)
 
 Rapport de classification sur jeu de validation originel 10%
+
 ![Rapport de classification sur jeu de validation originel 10%](assets/report-original-valid-10.png)
+
+Matrice de confusion avec jeu de données augmenté
+
+![Matrice de confusion](assets/matrix-confusion.png)
+
+Matrice de confusion sur jeux de validation 10% originel en pourcentage
+
+![Matrice de confusion sur jeux de validation 10% en pourcentage](assets/matrix-confusion-percent.png)
 
 ![Faux négatifs, Faux positifs sur le jeu de validation originel 10%](assets/false-positive-false-negative-10.png)
 
