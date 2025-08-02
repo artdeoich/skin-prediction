@@ -10,7 +10,11 @@ La précision du modèle est d'environ 93%.
 
 ![Matrice de confusion](assets/matrix-confusion.png)
 
+![Matrice de confusion sur jeux de validation 10% en pourcentage](assets/matrix-confusion-percent.png)
+
 ![Rapport de classification](assets/report.png)
+
+![Rapport de classification sur jeu de validation originelle 10%](assets/report-original-valid-10.png)
 
 ![Faux négatifs, Faux positifs](assets/false-positive-false-negative.png)
 
