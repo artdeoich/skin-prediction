@@ -14,9 +14,9 @@ La précision du modèle est d'environ 93%.
 
 ![Rapport de classification](assets/report.png)
 
-![Rapport de classification sur jeu de validation originelle 10%](assets/report-original-valid-10.png)
+![Rapport de classification sur jeu de validation originel 10%](assets/report-original-valid-10.png)
 
-![Faux négatifs, Faux positifs](assets/false-positive-false-negative.png)
+![Faux négatifs, Faux positifs sur le jeu de validation originel 10%](assets/false-positive-false-negative-10.png)
 
 
 ## Fonctionnalités
