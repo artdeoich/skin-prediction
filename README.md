@@ -1,14 +1,19 @@
 # Classification des grains de beauté
 
-Cette application permet de classifier une image de peau en tumeur **bénigne** ou **maligne**
-à partir d’un modèle entraîné, avec une interface web simple et interactive.
+Cette application permet de classifier une image de peau en tumeur **bénigne** ou **maligne** en 7 classes :
 
-La précision du modèle est d'environ 90%.
+![Description](assets/desc.png)
+
+à partir d’un modèle entraîné Densenet121 256px, avec une interface web simple et interactive.
+
+La précision du modèle est d'environ 93%.
 
 ![Matrice de confusion](assets/matrix-confusion.png)
 
-10% de faux négatifs.
-9% de faux positifs.
+![Rapport de classification](assets/report.png)
+
+![Faux négatifs, Faux positifs](assets/false-positive-false-negative.png)
+
 
 ## Fonctionnalités
 
