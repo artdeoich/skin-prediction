@@ -34,7 +34,7 @@ Matrice de confusion sur jeux de validation 10% originel en pourcentage
 - Barre graphique colorée : vert pour bénin, rouge pour malin
 - Modèle téléchargé automatiquement depuis Google Drive
 - Conteneur Docker prêt à déployer
-- Déploiement facile sur Google Cloud Run via Cloud Build
+- Déploiement facile sur Google Cloud Run via Cloud Build.
 
 ## Structure du projet
 
